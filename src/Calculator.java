@@ -1,14 +1,15 @@
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 class Calculator {
     double firstNumber = 0;
     double lastNumber;
-    double result = 0;
+    double sum = 0;
     char operator;
+    double result;
+    ArrayList<String> stringArrayList = new ArrayList<>();
+    ArrayList<Character> characterArrayList = new ArrayList<>();
 
     private double convertData(String data) {
-        double result;
-
         String[] splitData = new String[2];
         if(data.contains(".")) {
             for (int i = 0; i < data.length(); i++) {
@@ -18,11 +19,10 @@ class Calculator {
                     splitData[1] = data.substring(i + 1);
                 }
             }
-            result = convertInt(splitData[0]) + convertDouble(splitData[1]);
+            return  convertInt(splitData[0]) + convertDouble(splitData[1]);
         } else {
-            result = convertInt(data);
+            return convertInt(data);
         }
-        return result;
     }
 
     private int convertInt(String part) {
@@ -56,60 +56,125 @@ class Calculator {
         int intPart = convertInt(part.substring(0, end));
         return intPart * converter;
     }
+    private double roundDouble(double number){
+        number *= 100;
+        number = Math.round(number);
+        return number /100;
+    }
+
+    private boolean isSpecialCharacter(char c) {
+        return c == '+' ||  c == '*' || c == '/' || c == '.';
+    }
 
     private boolean isOperator(char c) {
         return c == '+' || c == '-' || c == '*' || c == '/';
     }
+    private void findMistake(String line){
+        if(isSpecialCharacter(line.charAt(0))) {
+            System.out.println("Ошибка ввода - Неверное начало строки");
+            return;
+        }
+        char c = ' ';
+        for (int i = 0; i < line.length(); i++) {
+            if(isSpecialCharacter(line.charAt(i))){
+                c = line.charAt(i);
+            }
+            if(isSpecialCharacter(c) && isSpecialCharacter(line.charAt(i-1))) {
+                System.out.println("Ошибка ввода - Два специальных символа подряд");
+                return;
+            } else if(c == '.' && line.charAt(i-1) == '.') {
+                System.out.println("Ошибка ввода - Двe точки подряд");
+                return;
+            }
+        }
+   }
+
 
     private void start(String text) {
         int begin = 0;
         int end;
-        String text1;
+        int counter = 0;
         for (int i = 0; i < text.length(); i++) {
             char charAt = text.charAt(i);
             if (isOperator(charAt)) {
+                if(counter == 0 && charAt != '-') continue;
+                counter++;
                 if (i != 0) {
                     end = i;
-                    System.out.println("BEGIN " + begin + " END " + end);
-                    text1 = text.substring(begin, end);
-                    System.out.println("TEXT1 " + text1);
                     operator = charAt;
                     firstNumber = lastNumber;
-                    System.out.println(convertData(text1));
-                    lastNumber = convertData(text1);
+                    lastNumber = convertData(text.substring(begin, end));
                     begin = end + 1;
-                    System.out.println("РЕЗУЛЬТАТ " + firstNumber + operator + lastNumber + "=" + calculate());
                 }
             } else if(i == text.length() -1){
                 end = text.length();
-                System.out.println("BEGIN " + begin + " END " + end);
-                text1 = text.substring(begin, end);
-                System.out.println("TEXT1 " + text1);
                 firstNumber = lastNumber;
-                System.out.println("CONVERT " + convertData(text1));
-                firstNumber = convertData(text1);
-                System.out.println("РЕЗУЛЬТАТ " + firstNumber + operator + lastNumber + "=" + calculate());
+                lastNumber = convertData(text.substring(begin, end));
             }
+        }
+        System.out.println("РЕЗУЛЬТАТ " + firstNumber + operator + lastNumber + "=" + result);
+        firstNumber = 0;
+        lastNumber = 0;
+    }
+    private void solution(){
+        for (int i = 1; i < characterArrayList.size(); i++) {
+            if(characterArrayList.get(i) == '*' || characterArrayList.get(i) == '/'){
+                firstNumber = convertData(stringArrayList.get(i-1));
+                lastNumber = convertData(stringArrayList.get(i));
+                operator = characterArrayList.get(i-1);
+                calculate();
+                stringArrayList.set(i-1, String.valueOf(sum));
+                stringArrayList.remove(i);
+                characterArrayList.remove(i-1);
+                solution();
+            } else if (characterArrayList.get(i) == '*' || characterArrayList.get(i) == '/') {
+                firstNumber = convertData(stringArrayList.get(i-1));
+                lastNumber = convertData(stringArrayList.get(i));
+                operator = characterArrayList.get(i-1);
+                calculate();
+                stringArrayList.set(i-1, String.valueOf(sum));
+                stringArrayList.remove(i);
+                characterArrayList.remove(i-1);
+                solution();
+            }
+
         }
     }
 
-    private double calculate() {
+    private void calculate() {
         if (operator == '+') {
-            result = firstNumber + lastNumber;
+            sum = firstNumber + lastNumber;
         } else if (operator == '-') {
             lastNumber = lastNumber * -1;
-            result = firstNumber + lastNumber;
-        } else if (operator == '*') result = firstNumber * lastNumber;
-        else if (operator == '/') result = firstNumber / lastNumber;
-
-
-        lastNumber = result;
-        return result;
+            sum = firstNumber + lastNumber;
+        } else if (operator == '*') sum = firstNumber * lastNumber;
+        else if (operator == '/') sum = firstNumber / lastNumber;
+            sum = roundDouble(sum);
+        lastNumber = sum;
+        result = sum;
     }
+    private void recognize(String line) {
 
-
+        int begin = 0;
+        int end;
+        for (int i = 0; i < line.length(); i++) {
+            char charAt = line.charAt(i);
+            if (isOperator(charAt)) {
+                characterArrayList.add(charAt);
+                stringArrayList.add(line.substring(begin, i));
+                begin = i+1;
+            } else if (i == line.length()-1) {
+                stringArrayList.add(line.substring(begin));
+            }
+        }
+        System.out.println(characterArrayList);
+        System.out.println(stringArrayList);
+        solution();
+        System.out.println(result);
+    }
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
-        calculator.start("1.965+22*5.3-8.6564/545.121+2323");
+        calculator.recognize("2+2*3/8");
+
     }
 }
