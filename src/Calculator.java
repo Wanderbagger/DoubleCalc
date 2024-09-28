@@ -11,6 +11,7 @@ class Calculator {
 
     private double convertData(String data) {
         String[] splitData = new String[2];
+        double result;
         if(data.contains(".")) {
             for (int i = 0; i < data.length(); i++) {
                 char charAt = data.charAt(i);
@@ -19,10 +20,13 @@ class Calculator {
                     splitData[1] = data.substring(i + 1);
                 }
             }
-            return  convertInt(splitData[0]) + convertDouble(splitData[1]);
+            result =  convertInt(splitData[0]) + convertDouble(splitData[1]);
         } else {
-            return convertInt(data);
+            result = convertInt(data);
+
         }
+        if(data.charAt(0) == '-') result *= -1;
+        return result;
     }
 
     private int convertInt(String part) {
@@ -90,55 +94,34 @@ class Calculator {
    }
 
 
-    private void start(String text) {
-        int begin = 0;
-        int end;
-        int counter = 0;
-        for (int i = 0; i < text.length(); i++) {
-            char charAt = text.charAt(i);
-            if (isOperator(charAt)) {
-                if(counter == 0 && charAt != '-') continue;
-                counter++;
-                if (i != 0) {
-                    end = i;
-                    operator = charAt;
-                    firstNumber = lastNumber;
-                    lastNumber = convertData(text.substring(begin, end));
-                    begin = end + 1;
-                }
-            } else if(i == text.length() -1){
-                end = text.length();
-                firstNumber = lastNumber;
-                lastNumber = convertData(text.substring(begin, end));
-            }
-        }
-        System.out.println("РЕЗУЛЬТАТ " + firstNumber + operator + lastNumber + "=" + result);
-        firstNumber = 0;
-        lastNumber = 0;
-    }
-    private void solution(){
-        for (int i = 1; i < characterArrayList.size(); i++) {
+
+    private void solveExpression(){
+        for (int i = 0; i < characterArrayList.size(); i++) {
             if(characterArrayList.get(i) == '*' || characterArrayList.get(i) == '/'){
-                firstNumber = convertData(stringArrayList.get(i-1));
-                lastNumber = convertData(stringArrayList.get(i));
-                operator = characterArrayList.get(i-1);
+                firstNumber = convertData(stringArrayList.get(i));
+                lastNumber = convertData(stringArrayList.get(i+1));
+                operator = characterArrayList.get(i);
                 calculate();
-                stringArrayList.set(i-1, String.valueOf(sum));
-                stringArrayList.remove(i);
-                characterArrayList.remove(i-1);
-                solution();
-            } else if (characterArrayList.get(i) == '*' || characterArrayList.get(i) == '/') {
-                firstNumber = convertData(stringArrayList.get(i-1));
-                lastNumber = convertData(stringArrayList.get(i));
-                operator = characterArrayList.get(i-1);
-                calculate();
-                stringArrayList.set(i-1, String.valueOf(sum));
-                stringArrayList.remove(i);
-                characterArrayList.remove(i-1);
-                solution();
+                stringArrayList.set(i, String.valueOf(sum));
+                stringArrayList.remove(i+1);
+                characterArrayList.remove(i);
+                i--;
             }
 
         }
+        for (int i = 0; i < characterArrayList.size(); i++) {
+        if (characterArrayList.get(i) == '+' || characterArrayList.get(i) == '-') {
+            firstNumber = convertData(stringArrayList.get(i));
+            lastNumber = convertData(stringArrayList.get(i+1));
+            operator = characterArrayList.get(i);
+            calculate();
+            stringArrayList.set(i, String.valueOf(sum));
+            stringArrayList.remove(i);
+            characterArrayList.remove(i);
+            i--;
+            }
+        }
+        System.out.println("RESULT: " + result);
     }
 
     private void calculate() {
@@ -150,31 +133,38 @@ class Calculator {
         } else if (operator == '*') sum = firstNumber * lastNumber;
         else if (operator == '/') sum = firstNumber / lastNumber;
             sum = roundDouble(sum);
+        System.out.println(firstNumber + " " + operator + " " + lastNumber + " = " + sum);
         lastNumber = sum;
         result = sum;
     }
-    private void recognize(String line) {
 
-        int begin = 0;
-        int end;
-        for (int i = 0; i < line.length(); i++) {
+
+    private void recognizeExpression(String line) {
+        System.out.println("INPUT DATA:" + line);
+        int end = line.length();
+        for (int i = line.length()-1; i >= 0; i--) {
+            if (line.length() == 0) break;
             char charAt = line.charAt(i);
-            if (isOperator(charAt)) {
-                characterArrayList.add(charAt);
-                stringArrayList.add(line.substring(begin, i));
-                begin = i+1;
-            } else if (i == line.length()-1) {
-                stringArrayList.add(line.substring(begin));
+            if(isOperator(charAt)) {
+                 if (charAt == '-' && (i == 0)) {
+                    stringArrayList.add(0, "-" + line.substring(i+1, end));
+                    break;
+                } else if (charAt == '-' && isOperator(line.charAt(i - 1))) {
+                    characterArrayList.add(0, line.charAt(i - 1));
+                    stringArrayList.add(0, line.substring(i, end));
+                    i--;
+                } else {
+                     characterArrayList.add(0, charAt);
+                     stringArrayList.add(0, line.substring(i+1, end));
+                 }
+                 end = i;
             }
         }
-        System.out.println(characterArrayList);
-        System.out.println(stringArrayList);
-        solution();
-        System.out.println(result);
     }
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
-        calculator.recognize("2+2*3/8");
+        calculator.recognizeExpression("-1*-3+4/2");
+        calculator.solveExpression();
 
     }
 }
