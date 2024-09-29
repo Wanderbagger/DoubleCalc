@@ -1,3 +1,4 @@
+import Exceptions.InputDataException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -61,34 +62,34 @@ public class CalculatorTest {
 
     @Test
     public void start() {
-        Exception exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start(""));
+        Exception exception = assertThrows(InputDataException.class, () -> calculator.start(""));
         assertTrue(exception.getMessage().contains("The string is Empty"));
 
-        exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start("h1+1"));
+        exception = assertThrows(InputDataException.class, () -> calculator.start("h1+1"));
         assertTrue(exception.getMessage().contains("The string contains letter"));
 
-        exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start("()"));
+        exception = assertThrows(InputDataException.class, () -> calculator.start("()"));
         assertTrue(exception.getMessage().contains("The string contains no digits"));
 
-        exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start("223"));
+        exception = assertThrows(InputDataException.class, () -> calculator.start("223"));
         assertTrue(exception.getMessage().contains("The string contains no operators"));
 
-        exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start("+2+2"));
+        exception = assertThrows(InputDataException.class, () -> calculator.start("+2+2"));
         assertTrue(exception.getMessage().contains("The string starts with an invalid character"));
 
-        exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start("2+2+"));
+        exception = assertThrows(InputDataException.class, () -> calculator.start("2+2+"));
         assertTrue(exception.getMessage().contains("The string ends with an invalid character"));
 
-        exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start("2+2++2"));
+        exception = assertThrows(InputDataException.class, () -> calculator.start("2+2++2"));
         assertTrue(exception.getMessage().contains("The string contains an incorrect sequence of characters"));
 
-        exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start("2.0.2+2"));
+        exception = assertThrows(InputDataException.class, () -> calculator.start("2.0.2+2"));
         assertTrue(exception.getMessage().contains("The string contains a number with two dots"));
 
-        exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start("(1+1))"));
+        exception = assertThrows(InputDataException.class, () -> calculator.start("(1+1))"));
         assertTrue(exception.getMessage().contains("The string contains incorrect brackets number"));
 
-        exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start("1+(1+1+)"));
+        exception = assertThrows(InputDataException.class, () -> calculator.start("1+(1+1+)"));
         assertTrue(exception.getMessage().contains("The string contains incorrect  brackets sequence"));
     }
 }

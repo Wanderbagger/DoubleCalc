@@ -1,20 +1,14 @@
-public class Analyzer {
-    final String line;
+import Exceptions.InputDataException;
 
-    public Analyzer(String line) throws InputDataException {
+public class Validator {
+    private final String line;
+
+    public Validator(String line) throws InputDataException {
         this.line = line;
-        analyse();
+        validate();
     }
 
-    private boolean isSpecialCharacter(char c) {
-        return c == '+' || c == '*' || c == '/' || c == '-' || c == '.';
-    }
-
-    private boolean isOperator(char c) { // распознавание операторов арифметических действий
-        return c == '+' || c == '-' || c == '*' || c == '/';
-    }
-
-    public void analyse() throws InputDataException {
+    public void validate() throws InputDataException {
         if (isEmpty()) throw new InputDataException("The string is Empty");
         else if (containsLetter()) throw new InputDataException("The string contains letter");
         else if (containsNoDigits()) throw new InputDataException("The string contains no digits");
@@ -34,29 +28,41 @@ public class Analyzer {
             throw new InputDataException("The string contains incorrect  brackets sequence");
     }
 
+    private boolean isSpecialCharacter(char c) {
+        return c == '+' || c == '*' || c == '/' || c == '-' || c == '.';
+    }
+
+    private boolean isOperator(char c) { // распознавание операторов арифметических действий
+        return c == '+' || c == '-' || c == '*' || c == '/';
+    }
 
     private boolean containsNoOperators() {
         for (int i = 0; i < line.length(); i++) {
-            if (isOperator(line.charAt(i))) return false;
+            if (isOperator(line.charAt(i))) {
+                return false;
+            }
         }
         return true;
     }
 
     private boolean containsLetter() {
         for (int i = 0; i < line.length(); i++) {
-            if (Character.isLetter(line.charAt(i))) return true;
+            if (Character.isLetter(line.charAt(i))) {
+                return true;
+            }
         }
         return false;
     }
 
     private boolean isEmpty() {
-        if (line == "") return true;
-        else return false;
+        return "".equals(line);
     }
 
     private boolean containsNoDigits() {
         for (int i = 0; i < line.length(); i++) {
-            if (Character.isDigit(line.charAt(i))) return false;
+            if (Character.isDigit(line.charAt(i))) {
+                return false;
+            }
         }
         return true;
     }
@@ -104,11 +110,5 @@ public class Analyzer {
             }
         }
         return false;
-    }
-
-    class InputDataException extends Exception {
-        public InputDataException(String message) {
-            super(message);
-        }
     }
 }

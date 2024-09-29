@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b92c0668-cc7b-4bf8-bddc-d79a00516f99" name="Changes" comment="Вставлены скобки, исключения и тесты">
+    <list default="true" id="b92c0668-cc7b-4bf8-bddc-d79a00516f99" name="Changes" comment="Правки ошибок">
+      <change afterPath="$PROJECT_DIR$/src/Exceptions/InputDataException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analyzer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Analyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Validator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Calculator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/CalculatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/CalculatorTest.java" afterDir="false" />
     </list>
@@ -67,7 +68,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CalculatorTest">
+  <component name="RunManager" selected="Application.Calculator">
     <configuration name="Calculator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Calculator" />
       <module name="DoubleCalc" />
@@ -116,9 +117,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.CalculatorTest" />
-        <item itemvalue="JUnit.CalculatorTest.start" />
         <item itemvalue="Application.Calculator" />
+        <item itemvalue="JUnit.CalculatorTest.start" />
+        <item itemvalue="JUnit.CalculatorTest" />
         <item itemvalue="JUnit.CalculatorTest.recognizeExpression" />
         <item itemvalue="JUnit.CalculatorTest.calculate" />
       </list>
@@ -189,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1727638478937</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Вставлены скобки, исключения и тесты">
+      <created>1727640824993</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1727640824993</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -212,7 +220,8 @@
     <MESSAGE value="Добавылены тесты" />
     <MESSAGE value="Добавлены тесты" />
     <MESSAGE value="Вставлены скобки, исключения и тесты" />
-    <option name="LAST_COMMIT_MESSAGE" value="Вставлены скобки, исключения и тесты" />
+    <MESSAGE value="Правки ошибок" />
+    <option name="LAST_COMMIT_MESSAGE" value="Правки ошибок" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DoubleCalc$Calculator.ic" NAME="Calculator Coverage Results" MODIFIED="1727418693420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
