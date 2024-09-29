@@ -1,10 +1,12 @@
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CalculatorTest {
     Calculator calculator = new Calculator();
+
     @Test
     public void convertData() {
         assertEquals(5.12, calculator.convertData("5.12"), "Проверка конвертации числа");
@@ -43,7 +45,7 @@ public class CalculatorTest {
         assertEquals(8, calculator.calculate(12, 4, '-'));
         assertEquals(8, calculator.calculate(4, 2, '*'));
         assertEquals(8, calculator.calculate(16, 2, '/'));
-        Exception exception = assertThrows(ArithmeticException.class, () -> calculator.calculate(5,0,'/'));
+        Exception exception = assertThrows(ArithmeticException.class, () -> calculator.calculate(5, 0, '/'));
         String expectedMessage = "Division by zero is prohibited";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
@@ -56,8 +58,9 @@ public class CalculatorTest {
         assertEquals("8.0", calculator.recognizeExpression("2*(2+2))"), "Проверка считывания скобок");
         assertEquals("-4.0", calculator.recognizeExpression("2*(2+2+(4-8)-2))"), "Проверка считывания двух пар скобок");
     }
+
     @Test
-    public void start(){
+    public void start() {
         Exception exception = assertThrows(Analyzer.InputDataException.class, () -> calculator.start(""));
         assertTrue(exception.getMessage().contains("The string is Empty"));
 

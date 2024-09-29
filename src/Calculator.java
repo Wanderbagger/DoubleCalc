@@ -59,7 +59,7 @@ class Calculator {
     protected String recognizeExpression(String line) { // распознавание строки в списки чисел и знаков
         ArrayList<String> numbers = new ArrayList<>();
         ArrayList<Character> operators = new ArrayList<>();
-        while (line.contains("(") && line.contains(")")){
+        while (line.contains("(") && line.contains(")")) {
             line = findBrackets(line);
         }
 
@@ -88,6 +88,7 @@ class Calculator {
 
         return solveExpression(numbers, operators);
     }
+
     protected String solveExpression(ArrayList<String> numbers, ArrayList<Character> operators) { // решение выражений в распзнанных списках
         double result = 0;
         for (int i = 0; i < operators.size(); i++) {
@@ -129,18 +130,19 @@ class Calculator {
     }
 
 
-// Заготовка под поиск скобок, не могу найти баг, не успеваю, доделаю позднее.
+    // Заготовка под поиск скобок, не могу найти баг, не успеваю, доделаю позднее.
     protected String findBrackets(String line) {
         int begin = 0;
         for (int i = 0; i < line.length(); i++) {
             if (line.charAt(i) == '(') {
-                  begin = i;
+                begin = i;
             } else if (line.charAt(i) == ')')
 
                 return line.substring(0, begin) + recognizeExpression(line.substring(begin + 1, i)) + line.substring(i + 1);
         }
         return "";
     }
+
     protected void start(String line) throws Analyzer.InputDataException {
         new Analyzer(line);
         System.out.println("RESULT: " + recognizeExpression(line));
