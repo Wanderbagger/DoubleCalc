@@ -56,7 +56,7 @@ class Calculator {
                 int intPart = convertInt(part.substring(0, 2));
                 return (intPart + 1) * converter;
             }
-       }
+        }
         int intPart = convertInt(part.substring(0, end));
         return intPart * converter;
     }
@@ -91,7 +91,7 @@ class Calculator {
                 return;
             }
         }
-   }
+    }
 
 
 
@@ -107,18 +107,17 @@ class Calculator {
                 characterArrayList.remove(i);
                 i--;
             }
-
         }
         for (int i = 0; i < characterArrayList.size(); i++) {
-        if (characterArrayList.get(i) == '+' || characterArrayList.get(i) == '-') {
-            firstNumber = convertData(stringArrayList.get(i));
-            lastNumber = convertData(stringArrayList.get(i+1));
-            operator = characterArrayList.get(i);
-            calculate();
-            stringArrayList.set(i, String.valueOf(sum));
-            stringArrayList.remove(i);
-            characterArrayList.remove(i);
-            i--;
+            if (characterArrayList.get(i) == '+' || characterArrayList.get(i) == '-') {
+                firstNumber = convertData(stringArrayList.get(i));
+                lastNumber = convertData(stringArrayList.get(i+1));
+                operator = characterArrayList.get(i);
+                calculate();
+                stringArrayList.set(i, String.valueOf(sum));
+                stringArrayList.remove(i+1);
+                characterArrayList.remove(i);
+                i--;
             }
         }
         System.out.println("RESULT: " + result);
@@ -132,7 +131,7 @@ class Calculator {
             sum = firstNumber + lastNumber;
         } else if (operator == '*') sum = firstNumber * lastNumber;
         else if (operator == '/') sum = firstNumber / lastNumber;
-            sum = roundDouble(sum);
+        sum = roundDouble(sum);
         System.out.println(firstNumber + " " + operator + " " + lastNumber + " = " + sum);
         lastNumber = sum;
         result = sum;
@@ -146,7 +145,7 @@ class Calculator {
             if (line.length() == 0) break;
             char charAt = line.charAt(i);
             if(isOperator(charAt)) {
-                 if (charAt == '-' && (i == 0)) {
+                if (charAt == '-' && (i == 0)) {
                     stringArrayList.add(0, "-" + line.substring(i+1, end));
                     break;
                 } else if (charAt == '-' && isOperator(line.charAt(i - 1))) {
@@ -154,16 +153,16 @@ class Calculator {
                     stringArrayList.add(0, line.substring(i, end));
                     i--;
                 } else {
-                     characterArrayList.add(0, charAt);
-                     stringArrayList.add(0, line.substring(i+1, end));
-                 }
-                 end = i;
+                    characterArrayList.add(0, charAt);
+                    stringArrayList.add(0, line.substring(i+1, end));
+                }
+                end = i;
             }
         }
     }
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
-        calculator.recognizeExpression("-1*-3+4/2");
+        calculator.recognizeExpression("-1*-3+4/2*2.1-8.5/4");
         calculator.solveExpression();
 
     }
