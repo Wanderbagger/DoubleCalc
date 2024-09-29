@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 class Calculator {
-    private double convertData(String data) {
+    private double convertData(String data) { // Конвертирование распознанного числа из String в double
         String[] splitData = new String[2];
         double result;
         if(data.contains(".")) {
@@ -15,13 +15,12 @@ class Calculator {
             result =  convertInt(splitData[0]) + convertDouble(splitData[1]);
         } else {
             result = convertInt(data);
-
         }
         if(data.charAt(0) == '-') result *= -1;
         return result;
     }
 
-    private int convertInt(String part) {
+    private int convertInt(String part) {  // Конвертирование распознанного целого числа или целой части числа из String в int
         int intPart = 0;
         for (int i = 0; i < part.length(); i++) {
             char charAt = part.charAt(i);
@@ -32,7 +31,7 @@ class Calculator {
         return intPart;
     }
 
-    private double convertDouble(String part) {
+    private double convertDouble(String part) { // Конвертирование распознанной дробной части числа из String в double
         double converter;
         int end;
         if (part.length() == 1){
@@ -52,43 +51,20 @@ class Calculator {
         int intPart = convertInt(part.substring(0, end));
         return intPart * converter;
     }
-    private double roundDouble(double number){
+    private double roundDouble(double number){ // округление числа до 2 знаков после запятой
         number *= 100;
         number = Math.round(number);
         return number /100;
     }
-
-    private boolean isSpecialCharacter(char c) {
-        return c == '+' ||  c == '*' || c == '/' || c == '.';
-    }
-
-    private boolean isOperator(char c) {
+    private boolean isOperator(char c) { // распознавание операторов арифметических действий
         return c == '+' || c == '-' || c == '*' || c == '/';
     }
-    private void findMistake(String line){
-        if(isSpecialCharacter(line.charAt(0))) {
-            System.out.println("Ошибка ввода - Неверное начало строки");
-            return;
-        }
-        char c = ' ';
-        for (int i = 0; i < line.length(); i++) {
-            if(isSpecialCharacter(line.charAt(i))){
-                c = line.charAt(i);
-            }
-            if(isSpecialCharacter(c) && isSpecialCharacter(line.charAt(i-1))) {
-                System.out.println("Ошибка ввода - Два специальных символа подряд");
-                return;
-            } else if(c == '.' && line.charAt(i-1) == '.') {
-                System.out.println("Ошибка ввода - Двe точки подряд");
-                return;
-            }
-        }
-    }
-
-    private void solveExpression( ArrayList<String> numbers, ArrayList<Character> operators){
+    private String solveExpression(ArrayList<String> numbers, ArrayList<Character> operators){ // решение выражений в распзнанных списках
         double result = 0;
         for (int i = 0; i < operators.size(); i++) {
             if(operators.get(i) == '*' || operators.get(i) == '/'){
+                System.out.println(numbers);
+                System.out.println(operators);
                 result = calculate(convertData(numbers.get(i)), convertData(numbers.get(i+1)), operators.get(i));
                 numbers.set(i, String.valueOf(result));
                 numbers.remove(i+1);
@@ -105,10 +81,10 @@ class Calculator {
                 i--;
             }
         }
-        System.out.println("RESULT: " + result);
+        return String.valueOf(result);
     }
 
-    private double calculate(double firstNumber, double lastNumber, char operator) {
+    private double calculate(double firstNumber, double lastNumber, char operator) { // выполнение арифметических действий
         double sum = 0;
         if (operator == '+') {
             sum = firstNumber + lastNumber;
@@ -116,14 +92,17 @@ class Calculator {
             lastNumber = lastNumber * -1;
             sum = firstNumber + lastNumber;
         } else if (operator == '*') sum = firstNumber * lastNumber;
-        else if (operator == '/') sum = firstNumber / lastNumber;
+        else if (operator == '/'){
+            if(lastNumber == 0) {
+                throw new ArithmeticException("Division by zero is prohibited");
+            } else sum = firstNumber / lastNumber;
+        }
         sum = roundDouble(sum);
         System.out.println(firstNumber + " " + operator + " " + lastNumber + " = " + sum);
         return sum;
     }
 
-
-    private void recognizeExpression(String line) {
+    private String recognizeExpression(String line) { // распознавание строки в списки чисел и знаков
         ArrayList<String> numbers = new ArrayList<>();
         ArrayList<Character> operators = new ArrayList<>();
         System.out.println("INPUT DATA:" + line);
@@ -131,9 +110,12 @@ class Calculator {
         for (int i = line.length()-1; i >= 0; i--) {
             if (line.length() == 0) break;
             char charAt = line.charAt(i);
-            if(isOperator(charAt)) {
+            if(isOperator(charAt) || i == 0) {
                 if (charAt == '-' && (i == 0)) {
                     numbers.add(0, "-" + line.substring(i+1, end));
+                    break;
+                }if (i == 0) {
+                    numbers.add(0, line.substring(0, end));
                     break;
                 } else if (charAt == '-' && isOperator(line.charAt(i - 1))) {
                     operators.add(0, line.charAt(i - 1));
@@ -146,10 +128,21 @@ class Calculator {
                 end = i;
             }
         }
-        solveExpression(numbers, operators);
+        return solveExpression(numbers, operators);
+    }
+
+    private void start(String line) throws Analyzer.InputDataException {
+        Analyzer analyzer = new Analyzer(line);
+        System.out.println("RESULT: " + recognizeExpression(line));
     }
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
-        calculator.recognizeExpression("-1*-3+4/2*2.1-8.5/4");
+        try {
+            calculator.start("5/0");
+        }catch (Analyzer.InputDataException exception){
+            exception.printStackTrace();
+        }
+
+
     }
 }

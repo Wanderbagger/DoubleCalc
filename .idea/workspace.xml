@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b92c0668-cc7b-4bf8-bddc-d79a00516f99" name="Changes" comment="Иправлен баг">
+    <list default="true" id="b92c0668-cc7b-4bf8-bddc-d79a00516f99" name="Changes" comment="Убраны общие поля класса">
+      <change afterPath="$PROJECT_DIR$/src/Analyzer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Calculator.java" afterDir="false" />
     </list>
@@ -88,7 +89,14 @@
       <option name="project" value="LOCAL" />
       <updated>1727608503790</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Убраны общие поля класса">
+      <created>1727609282060</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1727609282060</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -106,7 +114,8 @@
     <MESSAGE value="Черновой вариант, начало работы над округлением" />
     <MESSAGE value="Продолжение работы над тестовым - выполнена очередность действий, начало работы над анализатором ошибок и скобками" />
     <MESSAGE value="Иправлен баг" />
-    <option name="LAST_COMMIT_MESSAGE" value="Иправлен баг" />
+    <MESSAGE value="Убраны общие поля класса" />
+    <option name="LAST_COMMIT_MESSAGE" value="Убраны общие поля класса" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DoubleCalc$Calculator.ic" NAME="Calculator Coverage Results" MODIFIED="1727418693420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
